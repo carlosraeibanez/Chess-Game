@@ -10,7 +10,7 @@ public class knight extends pieces{
 
     @Override
     public String getPieceID(){
-        return "P";
+        return "N";
     }
 
 

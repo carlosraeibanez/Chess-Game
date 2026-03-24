@@ -11,6 +11,6 @@ public class queen extends pieces{
 
     @Override
     public String getPieceID(){
-        return "P";
+        return "Q";
     }
 }

@@ -10,7 +10,7 @@ public class king extends pieces{
 
     @Override
     public String getPieceID(){
-        return "P";
+        return "K";
     }
 
 

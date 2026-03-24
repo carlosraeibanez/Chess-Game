@@ -15,6 +15,6 @@ public class bishop extends pieces {
 
     @Override
     public String getPieceID(){
-        return "P";
+        return "B";
     }
 }

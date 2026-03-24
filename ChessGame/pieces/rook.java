@@ -10,7 +10,7 @@ public class rook extends pieces {
 
     @Override
     public String getPieceID(){
-        return "P";
+        return "R";
     }
 
 }

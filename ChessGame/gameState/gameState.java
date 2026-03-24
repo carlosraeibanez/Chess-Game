@@ -63,13 +63,13 @@ public class gameState {
             System.out.print((8 - i) + " ");
             for (int j = 0; j < 8; j++) {
                 if (board[i][j] != null) {
-                    System.out.print(board[i][j].getRepresentation() + " "); 
+                    System.out.format("%-3s",board[i][j].getRepresentation() + " "); 
                 } 
                 else {
                     if ((i+j)%2 != 0) {
                         System.out.print("## ");
                     } else {
-                        System.out.print(" ");
+                        System.out.print("   ");
                     }
                 }
             }
@@ -81,12 +81,25 @@ public class gameState {
         int[] start = decode(from);
         int [] end = decode(to);
 
-        pieces p = board[start[0]][start[1]];
-        if (p != null) {
-            board[end[0]][end[1]] = p;
-            board[start[0]][start[1]] = null;
-            p.setGridPosition(to.toLowerCase());
+        pieces attacker = board[start[0]][start[1]];
+        pieces takenPieces = board[end[0]][end[1]];
+
+        if (attacker == null){
+            System.out.println("No Piece to take");
         }
+        
+        if (takenPieces != null) {
+            if (takenPieces.getRepresentation().charAt(0) == attacker.getRepresentation().charAt(0)) {
+                System.out.println("Invalid Move: Your own piece");
+                return;
+            }
+            else {
+                System.out.println(attacker.getRepresentation() + " takes " + takenPieces.getRepresentation());
+            }
+        }
+        board[end[0]][end[1]] = attacker;
+        board[start[0]][start[1]] = null;
+        attacker.setGridPosition(to.toLowerCase());
     }
 
     private static int[] decode(String pos) {
