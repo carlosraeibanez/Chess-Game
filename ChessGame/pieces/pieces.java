@@ -1,22 +1,26 @@
 package pieces;
+
+/** Abstract class representing a generic chess piece. */
 public abstract class pieces {
-// Attributes
-    private String pieceColor;
-    private String gridPosition;
+    protected String pieceColor; // Changed to protected for subclasses
+    protected String gridPosition; // Grid position assignment
 
-
-// Constructor 
-    public pieces(String pieceColor, String gridPosition){
+    public pieces(String pieceColor, String gridPosition) {
         this.pieceColor = pieceColor;
         this.gridPosition = gridPosition;
     }
 
-// Methods 
-    public void possibleMoves(){
-
+    /** Returns the 2-character identification (color + peice name) */
+    public String getRepresentation() {
+        char colorChar = pieceColor.equalsIgnoreCase("white") ? 'w' : 'b';
+        return "" + colorChar + getPieceID();
     }
 
-    public void move(String gridPosition){
-
+    /** Returns the position of the piece */
+    public String getGridPosition() { 
+        return gridPosition; 
     }
+    
+    public abstract void possibleMoves();
+    public abstract String getPieceID();
 }
