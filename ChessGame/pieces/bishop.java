@@ -10,7 +10,11 @@ public class bishop extends pieces {
 
     //Possible Moves Method (Specific to Bisop)
     @Override
-    public void possibleMoves() {
-        System.out.println("Moving diagonally...");
+    public void possibleMoves(){
+    }
+
+    @Override
+    public String getPieceID(){
+        return "P";
     }
 }

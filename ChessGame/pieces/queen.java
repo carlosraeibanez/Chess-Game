@@ -7,6 +7,10 @@ public class queen extends pieces{
 
     @Override
     public void possibleMoves(){
-        //TODO (Diagonal and Laterally for any amount of squares
+    }
+
+    @Override
+    public String getPieceID(){
+        return "P";
     }
 }

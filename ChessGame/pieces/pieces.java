@@ -20,6 +20,10 @@ public abstract class pieces {
     public String getGridPosition() { 
         return gridPosition; 
     }
+
+    public void setGridPosition(String position){
+        this.gridPosition = position;
+    }
     
     public abstract void possibleMoves();
     public abstract String getPieceID();

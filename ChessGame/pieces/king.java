@@ -6,7 +6,11 @@ public class king extends pieces{
     }
     @Override
     public void possibleMoves(){
-        //TODO 
+    }
+
+    @Override
+    public String getPieceID(){
+        return "P";
     }
 
 

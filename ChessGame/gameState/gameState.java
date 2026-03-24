@@ -1,5 +1,4 @@
 package gameState;
-
 import pieces.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ public class gameState {
 
     /** Populates the list of pieces with their starting positions */
     public static void pieceInitialize() {
-        allPieces.clear();
+        allPieces.clear(); // Resets the board
         // Add White Pawns
         for (char i = 'a'; i <= 'h'; i++) {
             allPieces.add(new pawn("white", i + "2"));
@@ -30,6 +29,7 @@ public class gameState {
         for (char i = 'a'; i <= 'h'; i++) {
             allPieces.add(new pawn("black", i + "7"));
         }
+        // Add rook, knight, queen, king
         allPieces.add(new rook("black", "a8")); 
         allPieces.add(new rook("black", "h8")); 
         allPieces.add(new knight("black", "b8"));
@@ -58,17 +58,42 @@ public class gameState {
 
     /** Displays the current game state of the board in the terminal */
     public static void display() {
-        System.out.println("   A  B  C  D  E  F  G  H"); // Top labels [cite: 13]
+        System.out.println("   A  B  C  D  E  F  G  H");
         for (int i = 0; i < 8; i++) {
             System.out.print((8 - i) + " ");
             for (int j = 0; j < 8; j++) {
-                if (board[i][j] == null) {
-                    System.out.print("## ");
-                } else {
-                    System.out.print(board[i][j].getRepresentation() + " ");
+                if (board[i][j] != null) {
+                    System.out.print(board[i][j].getRepresentation() + " "); 
+                } 
+                else {
+                    if ((i+j)%2 != 0) {
+                        System.out.print("## ");
+                    } else {
+                        System.out.print(" ");
+                    }
                 }
             }
             System.out.println();
         }
+    }
+
+    public static void movePiece(String from, String to){
+        int[] start = decode(from);
+        int [] end = decode(to);
+
+        pieces p = board[start[0]][start[1]];
+        if (p != null) {
+            board[end[0]][end[1]] = p;
+            board[start[0]][start[1]] = null;
+            p.setGridPosition(to.toLowerCase());
+        }
+    }
+
+    private static int[] decode(String pos) {
+        int col = pos.toLowerCase().charAt(0) - 'a'; 
+        int row = 8 - Character.getNumericValue(pos.charAt(1)); 
+        return new int[]{row, col};
+
+
     }
 }
