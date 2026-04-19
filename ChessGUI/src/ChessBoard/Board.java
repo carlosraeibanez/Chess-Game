@@ -47,6 +47,25 @@ Create method that can change the colors in settings */
     public void addPieces() {
         Knight whiteKnight = new Knight(this, 1, 7, true);
         CHESS_SQUARES[7][1].add(new JLabel(whiteKnight.icon));
+
+        Pawn whitePawn1 = new Pawn(this, 0, 6, true);
+        CHESS_SQUARES[6][0].add(new JLabel(whitePawn1.icon));
+        Pawn whitePawn2 = new Pawn(this, 1, 6, true);
+        CHESS_SQUARES[6][1].add(new JLabel(whitePawn2.icon));
+        Pawn whitePawn3 = new Pawn(this, 2, 6, true);
+        CHESS_SQUARES[6][2].add(new JLabel(whitePawn3.icon));
+        Pawn whitePawn4 = new Pawn(this, 3, 6, true);
+        CHESS_SQUARES[6][3].add(new JLabel(whitePawn4.icon));
+        Pawn whitePawn5 = new Pawn(this, 4, 6, true);
+        CHESS_SQUARES[6][4].add(new JLabel(whitePawn5.icon));
+        Pawn whitePawn6 = new Pawn(this, 5, 6, true);
+        CHESS_SQUARES[6][5].add(new JLabel(whitePawn6.icon));
+        Pawn whitePawn7 = new Pawn(this, 6, 6, true);
+        CHESS_SQUARES[6][6].add(new JLabel(whitePawn7.icon));
+        Pawn whitePawn8 = new Pawn(this, 7, 6, true);
+        CHESS_SQUARES[6][7].add(new JLabel(whitePawn8.icon));
+
+
         revalidate();
         repaint();
     }
