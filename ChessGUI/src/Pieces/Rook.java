@@ -5,19 +5,24 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import ChessBoard.Board;
 
-public class Pawn extends Piece{
-    public Pawn (Board board, int col, int row, boolean isWhite) {
+public class Rook extends Piece{
+        public Rook (Board board, int col, int row, boolean isWhite) {
         super(board, col, row, isWhite);
         this.pieceName = "Rook";
 
         if (isWhite == true){
-            BufferedImage sub = sheet.getSubimage(5 * sheetScale, 0, sheetScale, sheetScale);
+            BufferedImage sub = sheet.getSubimage(4 * sheetScale, 0, sheetScale, sheetScale);
             this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         }
         else {
-            BufferedImage sub = sheet.getSubimage(5 * sheetScale, sheetScale, sheetScale, sheetScale);
+            BufferedImage sub = sheet.getSubimage(4 * sheetScale, sheetScale, sheetScale, sheetScale);
             this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         }
     }
+
+
+
+
+
 
 }

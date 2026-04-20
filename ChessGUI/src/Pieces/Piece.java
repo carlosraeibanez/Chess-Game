@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Piece { // SUPERCLASS OF ALL PIECES
 
-// ATTRIBUTES OF PIECES
+/* ATTRIBUTES OF PIECES X Y POSITIONS AND */
     public int col;
     public int row;
 

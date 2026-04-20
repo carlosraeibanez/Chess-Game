@@ -10,8 +10,14 @@ public class Knight extends Piece{
     super(board, col, row, isWhite);
     this.pieceName = "Knight";
     
-    BufferedImage sub = sheet.getSubimage(3 * sheetScale, isWhite ? 0 : sheetScale, sheetScale, sheetScale);
-    this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+    if(isWhite == true){
+        BufferedImage sub = sheet.getSubimage(3 * sheetScale, 0, sheetScale, sheetScale);
+        this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+    }
+    else {
+        BufferedImage sub = sheet.getSubimage(3 * sheetScale, sheetScale, sheetScale, sheetScale);
+        this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+    }
 }
 }
 
