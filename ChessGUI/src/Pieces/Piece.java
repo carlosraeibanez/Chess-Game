@@ -7,8 +7,9 @@ import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Piece { // SUPERCLASS OF ALL PIECES
+public class Piece implements Serializable{ // SUPERCLASS OF ALL PIECES
 
 /* ATTRIBUTES OF PIECES X Y POSITIONS AND */
     public int col;
@@ -20,8 +21,8 @@ public class Piece { // SUPERCLASS OF ALL PIECES
     public boolean isWhite;
     public String pieceName;
     public int value;
-
-    BufferedImage sheet;
+    private static final long serialVersionUID = 1L;
+    transient BufferedImage sheet;
     {   try {
             sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("pieces.png"));
         }
@@ -30,7 +31,7 @@ public class Piece { // SUPERCLASS OF ALL PIECES
         }
     }
     protected int sheetScale = sheet != null ? sheet.getWidth(null) / 6 : 100;
-    public ImageIcon icon;
+    public transient ImageIcon icon;
     Board board;
 
     public Piece(Board board, int col, int row, boolean isWhite) {

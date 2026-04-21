@@ -4,6 +4,9 @@ import Pieces.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Board extends JFrame {
 /*FINAL VARIABLES - Sets the base size of 8x8, Initializes an array of JPanel objects with coordinates*/
@@ -26,6 +29,7 @@ public class Board extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initializeBoard();
         addPieces();
+        setupMenuBar();
         setVisible(true);
     }
 
@@ -144,12 +148,113 @@ Create method that can change the colors in settings */
         if (oldSquare.getComponentCount() > 0) {
         Component component = oldSquare.getComponent(0);
         oldSquare.removeAll(); 
+            if (move.captured != null) {
+                if (move.captured instanceof King) {
+                    String winner = move.piece.isWhite ? "White Player" : "Black Player";
+                    showEndgamePopup(winner);
+                }
+                pieceList.remove(move.captured);
+            }
         newSquare.removeAll();
         newSquare.add(component);
 
         revalidate();
         repaint();
-    }
+        }
 
     }
+// CREATED END GAME POP UP WHEN KING IS CAPTURED
+    private void showEndgamePopup(String winner) {
+        JOptionPane.showMessageDialog(this, "Game Over, " + winner + " wins!", "Checkmate", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+    }
+// MENU SYSTEM AT THE TOP LEFT FOR NEW GAME, LOAD GAME, and SAVE GAME (as a serialization)
+    private void setupMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+        JMenuItem newGameItem = new JMenuItem("New Game");
+        newGameItem.addActionListener(e -> resetGame());
+        JMenuItem saveGameItem = new JMenuItem("Save Game");
+        saveGameItem.addActionListener(e -> saveGame());
+        JMenuItem loadGameItem = new JMenuItem("Load Game");
+        loadGameItem.addActionListener(e -> loadGame());
+
+        gameMenu.add(newGameItem);
+        gameMenu.add(saveGameItem);
+        gameMenu.add(loadGameItem);
+        menuBar.add(gameMenu);
+
+        this.setJMenuBar(menuBar);
+        JMenuItem settingsItem = new JMenuItem("Settings");
+        settingsItem.addActionListener(e -> {
+            SettingsDialog settings = new SettingsDialog(this);
+            settings.setVisible(true);
+        });
+        gameMenu.add(settingsItem);
+    }
+
+    private void resetGame() {
+        pieceList.clear();
+        for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
+            for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
+                CHESS_SQUARES[i][j].removeAll();
+            }
+        }
+        addPieces();
+        revalidate();
+        repaint();
+    }
+
+    private void saveGame() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("chess_save.dat"))) {
+            out.writeObject(pieceList);
+            JOptionPane.showMessageDialog(this, "Game Saved");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error SAving");
+        }
+    }
+
+    private void loadGame() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("chess_saved_game.dat"))) {
+            ArrayList<Piece> loadedPieces = (ArrayList<Piece>) in.readObject();
+            pieceList.clear();
+            for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
+                for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
+                    CHESS_SQUARES[i][j].removeAll();
+                }
+            }
+            pieceList = loadedPieces;
+            for (Piece p : pieceList) {
+                CHESS_SQUARES[p.row][p.col].add(new JLabel(p.icon));
+            }
+
+            revalidate();
+            repaint();
+            JOptionPane.showMessageDialog(this, "Game Loaded!");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error Loading.");
+        }
+    }
+
+//SETTINGS FOR THE BOARD
+    public void updateBoardTheme(Color light, Color dark) {
+        for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
+            for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
+                if ((i + j) % 2 == 0) {
+                    CHESS_SQUARES[i][j].setBackground(light);
+                } else {
+                    CHESS_SQUARES[i][j].setBackground(dark);
+                }
+            }
+        }
+    }
+
+// BOARD SIZING CHANGE
+    public void updateBoardSize(int size) {
+        this.setSize(size, size);
+        this.setLocationRelativeTo(null); // Re-center
+    }
+
 }
