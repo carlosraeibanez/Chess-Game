@@ -1,6 +1,8 @@
+
+
 import javax.swing.SwingUtilities;
 
-import ChessBoard.*;
+import ChessBoard.Board;
 
 public class Main {
     public static void main (String args []){

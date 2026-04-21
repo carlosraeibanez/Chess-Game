@@ -3,11 +3,14 @@ package ChessBoard;
 import Pieces.*;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Board extends JFrame {
 /*FINAL VARIABLES - Sets the base size of 8x8, Initializes an array of JPanel objects with coordinates*/
     private final int CHESS_BOARD_SIZING = 8;
     private final JPanel [][] CHESS_SQUARES = new JPanel[CHESS_BOARD_SIZING][CHESS_BOARD_SIZING];
+    ArrayList<Piece> pieceList = new ArrayList<>();
+    public Piece chosenPiece;
 
 /*BOARD CONSTRUCTOR AND INITIALIZATION*/
     public Board(){
@@ -15,6 +18,10 @@ public class Board extends JFrame {
         setSize(800, 800); 
         setLayout(new GridLayout(CHESS_BOARD_SIZING, CHESS_BOARD_SIZING));
         setLocationRelativeTo(null); // ADDED A CENTERING TO THE BOARD
+
+        Input input = new Input(this);
+        this.addMouseListener(input);
+        this.addMouseMotionListener(input);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initializeBoard();
@@ -43,65 +50,106 @@ Create method that can change the colors in settings */
 
     public void addPieces() {
 
-    //PAWNS ADDED (CAN PROBABLY USE FOR LOOPS FOR COLUMBS AND ROWS)
-        Pawn whitePawn1 = new Pawn(this, 0, 6, true);
-        CHESS_SQUARES[6][0].add(new JLabel(whitePawn1.icon));
-        Pawn whitePawn2 = new Pawn(this, 1, 6, true);
-        CHESS_SQUARES[6][1].add(new JLabel(whitePawn2.icon));
-        Pawn whitePawn3 = new Pawn(this, 2, 6, true);
-        CHESS_SQUARES[6][2].add(new JLabel(whitePawn3.icon));
-        Pawn whitePawn4 = new Pawn(this, 3, 6, true);
-        CHESS_SQUARES[6][3].add(new JLabel(whitePawn4.icon));
-        Pawn whitePawn5 = new Pawn(this, 4, 6, true);
-        CHESS_SQUARES[6][4].add(new JLabel(whitePawn5.icon));
-        Pawn whitePawn6 = new Pawn(this, 5, 6, true);
-        CHESS_SQUARES[6][5].add(new JLabel(whitePawn6.icon));
-        Pawn whitePawn7 = new Pawn(this, 6, 6, true);
-        CHESS_SQUARES[6][6].add(new JLabel(whitePawn7.icon));
-        Pawn whitePawn8 = new Pawn(this, 7, 6, true);
-        CHESS_SQUARES[6][7].add(new JLabel(whitePawn8.icon));
-        Pawn blackPawn1 = new Pawn(this, 0, 0, false);
-        CHESS_SQUARES[1][0].add(new JLabel(blackPawn1.icon));
-        Pawn blackPawn2 = new Pawn(this, 0, 1, false);
-        CHESS_SQUARES[1][1].add(new JLabel(blackPawn2.icon));
-        Pawn blackPawn3 = new Pawn(this, 0, 2, false);
-        CHESS_SQUARES[1][2].add(new JLabel(blackPawn3.icon));
-        Pawn blackPawn4 = new Pawn(this, 0, 3, false);
-        CHESS_SQUARES[1][3].add(new JLabel(blackPawn4.icon));
-        Pawn blackPawn5 = new Pawn(this, 0, 4, false);
-        CHESS_SQUARES[1][4].add(new JLabel(blackPawn5.icon));
-        Pawn blackPawn6 = new Pawn(this, 0, 5, false);
-        CHESS_SQUARES[1][5].add(new JLabel(blackPawn6.icon));
-        Pawn blackPawn7 = new Pawn(this, 0, 6, false);
-        CHESS_SQUARES[1][6].add(new JLabel(blackPawn7.icon)); 
-        Pawn blackPawn8 = new Pawn(this, 0, 7, false);
-        CHESS_SQUARES[1][7].add(new JLabel(blackPawn8.icon));        
+    //PAWNS ADDED NOW USING FOR LOOPS
+    for (int i = 0; i < 8; i++) {
+    Pawn whitePawn = new Pawn(this, i, 6, true);
+        pieceList.add(whitePawn);
+        CHESS_SQUARES[6][i].add(new JLabel(whitePawn.icon));
+    }
+    for (int j = 0; j < 8; j++) {
+    Pawn blackPawn = new Pawn(this, j, 1, false);
+        pieceList.add(blackPawn);
+        CHESS_SQUARES[1][j].add(new JLabel(blackPawn.icon));
+    }
         
     // KNIGHTS 
         Knight whiteKnight1 = new Knight(this, 1, 7, true);
         CHESS_SQUARES[7][1].add(new JLabel(whiteKnight1.icon));
+        pieceList.add(whiteKnight1);
         Knight whiteKnight2 = new Knight(this, 6, 7, true);
         CHESS_SQUARES[7][6].add(new JLabel(whiteKnight2.icon));
+        pieceList.add(whiteKnight2);
         Knight blackKnight1 = new Knight(this, 1, 0, false);
         CHESS_SQUARES[0][1].add(new JLabel(blackKnight1.icon));
+        pieceList.add(blackKnight1);
         Knight blackKnight2 = new Knight(this, 6, 0, false);
         CHESS_SQUARES[0][6].add(new JLabel(blackKnight2.icon));
+        pieceList.add(blackKnight2);
 
     // BISHOPS
-        Bishop whiteBishop1 = new Bishop(this, 7, 5, true);
+        Bishop whiteBishop1 = new Bishop(this, 5, 7, true);
         CHESS_SQUARES[7][5].add(new JLabel(whiteBishop1.icon));
-        Bishop whiteBishop2 = new Bishop(this, 7, 2, true);
+        pieceList.add(whiteBishop1);
+        Bishop whiteBishop2 = new Bishop(this, 2, 7, true);
         CHESS_SQUARES[7][2].add(new JLabel(whiteBishop2.icon));
-        Bishop blackBishop1 = new Bishop(this, 7, 0, false);
+        pieceList.add(whiteBishop2);
+        Bishop blackBishop1 = new Bishop(this, 5, 0, false);
         CHESS_SQUARES[0][5].add(new JLabel(blackBishop1.icon));
-        Bishop blackBishop2 = new Bishop(this, 7, 0, false);
+        pieceList.add(blackBishop1);
+        Bishop blackBishop2 = new Bishop(this, 2, 0, false);
         CHESS_SQUARES[0][2].add(new JLabel(blackBishop2.icon));
+        pieceList.add(blackBishop2);
 
     // ROOKS
         Rook whiteRook1 = new Rook(this, 0, 7, true);
-        CHESS_SQUARES[7][0].add(new JLabel(whiteRook1.icon));        
+        CHESS_SQUARES[7][0].add(new JLabel(whiteRook1.icon));       
+        pieceList.add(whiteRook1); 
+        Rook whiteRook2 = new Rook(this, 7, 7, true);
+        pieceList.add(whiteRook2);
+        CHESS_SQUARES[7][7].add(new JLabel(whiteRook2.icon));  
+        Rook blackRook1 = new Rook(this, 0, 0, false);
+        pieceList.add(blackRook1);
+        CHESS_SQUARES[0][0].add(new JLabel(blackRook1.icon));        
+        Rook blackRook2 = new Rook(this, 7, 0, false);
+        pieceList.add(blackRook2);
+        CHESS_SQUARES[0][7].add(new JLabel(blackRook2.icon));  
+
+    // QUEENS
+        Queen whiteQueen = new Queen(this, 3, 7, true);
+        CHESS_SQUARES[7][3].add(new JLabel(whiteQueen.icon));
+        pieceList.add(whiteQueen);
+        Queen blackQueen = new Queen(this, 4, 0, false);
+        CHESS_SQUARES[0][4].add(new JLabel(blackQueen.icon));
+        pieceList.add(blackQueen);
+
+    // KINGS
+        King whiteKing = new King(this, 4,7,true);
+        CHESS_SQUARES[7][4].add(new JLabel(whiteKing.icon));
+        pieceList.add(whiteKing);
+        King blackKing = new King(this, 3, 0, false);
+        CHESS_SQUARES[0][3].add(new JLabel(blackKing.icon));   
+        pieceList.add(blackKing);    
+
+        
+        revalidate();
+        repaint();
+    }
+
+    public Piece getPiece(int col, int row){
+        for (Piece piece : pieceList){
+            if (piece.col == col && piece.row == row) {
+                return piece;
+            }
+        }
+        return null;
+    }
+
+    public void makeMove(Move move){
+        move.piece.col = move.finalX;
+        move.piece.row = move.finalY;
+
+        JPanel oldSquare = CHESS_SQUARES[move.initialY][move.initialX];
+        JPanel newSquare = CHESS_SQUARES[move.finalY][move.finalX];
+
+        if (oldSquare.getComponentCount() > 0) {
+        Component component = oldSquare.getComponent(0);
+        oldSquare.removeAll(); 
+        newSquare.removeAll();
+        newSquare.add(component);
 
         revalidate();
         repaint();
+    }
+
     }
 }
