@@ -2,8 +2,8 @@ package ChessBoard;
 
 
 import Pieces.*;
-
 public class Move {
+// ATTRIBUTES
     int initialX;
     int initialY;
 
@@ -12,15 +12,20 @@ public class Move {
 
     Piece piece;
     Piece captured;
+    
+// CONSTRUCTOR
+public Move(Board board, Piece piece, int finalCol, int finalRow){
+    this.initialX = piece.col;
+    this.initialY = piece.row;
+    this.finalX = finalCol;
+    this.finalY = finalRow;
+    this.piece = piece;
+    this.captured = board.getPiece(finalX, finalY);
+}
 
-    public Move(Board board, Piece piece, int finalCol, int finalRow){
-        this.initialX = piece.col;
-        this.initialY = piece.row;
+// VALIDATES MOVES TO BE IMPLEMENTED IN EACH SUBCLASS
+public void isValid(Move move){
 
-        this.finalX = finalCol;
-        this.finalY = finalRow;
+}
 
-        this.piece = piece;
-        this.captured = board.getPiece(finalX, finalY);
-    }
 }

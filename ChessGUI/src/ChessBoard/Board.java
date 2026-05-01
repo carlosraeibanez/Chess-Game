@@ -5,8 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.io.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Board extends JFrame {
 /*FINAL VARIABLES - Sets the base size of 8x8, Initializes an array of JPanel objects with coordinates*/
@@ -14,6 +12,7 @@ public class Board extends JFrame {
     private final JPanel [][] CHESS_SQUARES = new JPanel[CHESS_BOARD_SIZING][CHESS_BOARD_SIZING];
     ArrayList<Piece> pieceList = new ArrayList<>();
     public Piece chosenPiece;
+    public int tileSize = 800 / 8;
 
 /*BOARD CONSTRUCTOR AND INITIALIZATION*/
     public Board(){
@@ -129,6 +128,7 @@ Create method that can change the colors in settings */
         repaint();
     }
 
+// GETTER FOR PIECE
     public Piece getPiece(int col, int row){
         for (Piece piece : pieceList){
             if (piece.col == col && piece.row == row) {
@@ -138,6 +138,7 @@ Create method that can change the colors in settings */
         return null;
     }
 
+// MAKES THE MOVE ON THE BOARD, REVALIDATES AND THEN REPAINTS THE BOARD SUCH THAT THE GUI RESPONDS
     public void makeMove(Move move){
         move.piece.col = move.finalX;
         move.piece.row = move.finalY;
@@ -157,17 +158,70 @@ Create method that can change the colors in settings */
             }
         newSquare.removeAll();
         newSquare.add(component);
-
+        move.piece.isFirstMove = false;
         revalidate();
         repaint();
         }
 
     }
+
 // CREATED END GAME POP UP WHEN KING IS CAPTURED
     private void showEndgamePopup(String winner) {
         JOptionPane.showMessageDialog(this, "Game Over, " + winner + " wins!", "Checkmate", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
     }
+
+//SETTINGS FOR THE BOARD
+    public void updateBoardTheme(Color light, Color dark) {
+        for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
+            for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
+                if ((i + j) % 2 == 0) {
+                    CHESS_SQUARES[i][j].setBackground(light);
+                } else {
+                    CHESS_SQUARES[i][j].setBackground(dark);
+                }
+            }
+        }
+    }
+
+// BOARD SIZING CHANGE
+    public void updateBoardSize(int size) {
+        this.setSize(size, size);
+        this.setLocationRelativeTo(null);
+    }
+
+// PIECES ARE ALL CHANGED
+public void updatePieceColors(String colorChosen) {
+    String newFile;
+    if (colorChosen.equals("blue")) {
+        newFile = "blue.png";
+    } else if (colorChosen.equals("pink")) {
+        newFile = "pink.png";
+    } else {
+        newFile = "pieces.png";
+    }
+
+    for (Piece piece : pieceList) {
+        piece.setFileName(newFile);
+        piece.loadIcon();
+    }
+    refreshBoardGraphics();
+}
+
+// REFRESHES THE BOARD TO REFLECT CHANGE IN updatePieceCOlos()
+private void refreshBoardGraphics() {
+    for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
+        for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
+            CHESS_SQUARES[i][j].removeAll();
+        }
+    }
+    for (Piece p : pieceList) {
+        CHESS_SQUARES[p.row][p.col].add(new JLabel(p.icon));
+    }
+    revalidate();
+    repaint();
+}
+
 // MENU SYSTEM AT THE TOP LEFT FOR NEW GAME, LOAD GAME, and SAVE GAME (as a serialization)
     private void setupMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -187,7 +241,7 @@ Create method that can change the colors in settings */
         this.setJMenuBar(menuBar);
         JMenuItem settingsItem = new JMenuItem("Settings");
         settingsItem.addActionListener(e -> {
-            SettingsDialog settings = new SettingsDialog(this);
+            Settings settings = new Settings(this);
             settings.setVisible(true);
         });
         gameMenu.add(settingsItem);
@@ -215,6 +269,9 @@ Create method that can change the colors in settings */
         }
     }
 
+
+// NEED TO FIX LOAD GAME BECAUSE THE SPRITES CANNOT BE SERIALIZED, change to keep the data except the sprite
+// then redraw after the data is loaded in
     private void loadGame() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("chess_saved_game.dat"))) {
             ArrayList<Piece> loadedPieces = (ArrayList<Piece>) in.readObject();
@@ -236,25 +293,6 @@ Create method that can change the colors in settings */
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error Loading.");
         }
-    }
-
-//SETTINGS FOR THE BOARD
-    public void updateBoardTheme(Color light, Color dark) {
-        for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
-            for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
-                if ((i + j) % 2 == 0) {
-                    CHESS_SQUARES[i][j].setBackground(light);
-                } else {
-                    CHESS_SQUARES[i][j].setBackground(dark);
-                }
-            }
-        }
-    }
-
-// BOARD SIZING CHANGE
-    public void updateBoardSize(int size) {
-        this.setSize(size, size);
-        this.setLocationRelativeTo(null); // Re-center
     }
 
 }
