@@ -19,7 +19,7 @@ public class Piece implements Serializable{ // SUPERCLASS OF ALL PIECES
 
     public boolean isWhite;
     public String pieceName;
-    public int value;
+    //public int value;
     private static final long serialVersionUID = 1L;
     transient BufferedImage sheet;
     public String fileName = "pieces.png";
@@ -29,7 +29,7 @@ public class Piece implements Serializable{ // SUPERCLASS OF ALL PIECES
             catch (IOException e) {e.printStackTrace();}}
     protected int sheetScale = sheet != null ? sheet.getWidth(null) / 6 : 100;
     public transient ImageIcon icon;
-    Board board;
+    public Board board; // CHANGED TO PUBLIC SO LOADGAME() CAN SEE
 
     public Piece(Board board, int col, int row, boolean isWhite) {
         this.board = board;

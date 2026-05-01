@@ -20,4 +20,17 @@ public class Bishop extends Piece{
         }
     }
 
+    @Override
+    public boolean isValidMove(int targetCol, int targetRow) {
+        if (!super.isValidMove(targetCol, targetRow)) return false;
+        if (Math.abs(targetCol - col) != Math.abs(targetRow - row)) return false;
+
+        int colStep = (targetCol > col) ? 1 : -1;
+        int rowStep = (targetRow > row) ? 1 : -1;
+
+        for (int i = 1; i < Math.abs(targetCol - col); i++) {
+            if (board.getPiece(col + i * colStep, row + i * rowStep) != null) return false;
+        }
+        return true;
+    }
 }

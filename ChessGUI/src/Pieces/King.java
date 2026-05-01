@@ -20,5 +20,10 @@ public class King extends Piece{
         }
     }
 
-
+    @Override
+    public boolean isValidMove(int targetCol, int targetRow) {
+        if (!super.isValidMove(targetCol, targetRow)) return false;
+        
+        return Math.max(Math.abs(targetCol - col), Math.abs(targetRow - row)) == 1;
+    }
 }

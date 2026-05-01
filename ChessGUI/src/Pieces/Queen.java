@@ -19,5 +19,22 @@ public class Queen extends Piece{
             this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
         }
     }
+    @Override
+    public boolean isValidMove(int targetCol, int targetRow) {
+        if (!super.isValidMove(targetCol, targetRow)) return false;
+        
+        boolean isRookMove = (col == targetCol || row == targetRow);
+        boolean isBishopMove = (Math.abs(targetCol - col) == Math.abs(targetRow - row));
+        
+        if (!isRookMove && !isBishopMove) return false;
+
+        int colStep = Integer.compare(targetCol, col);
+        int rowStep = Integer.compare(targetRow, row);
+
+        for (int i = 1; i < Math.max(Math.abs(targetCol - col), Math.abs(targetRow - row)); i++) {
+            if (board.getPiece(col + i * colStep, row + i * rowStep) != null) return false;
+        }
+        return true;
+    }
 
 }

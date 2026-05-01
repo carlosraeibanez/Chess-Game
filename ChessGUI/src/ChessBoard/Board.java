@@ -270,29 +270,29 @@ private void refreshBoardGraphics() {
     }
 
 
-// NEED TO FIX LOAD GAME BECAUSE THE SPRITES CANNOT BE SERIALIZED, change to keep the data except the sprite
-// then redraw after the data is loaded in
-    private void loadGame() {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("chess_saved_game.dat"))) {
-            ArrayList<Piece> loadedPieces = (ArrayList<Piece>) in.readObject();
-            pieceList.clear();
-            for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
-                for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
-                    CHESS_SQUARES[i][j].removeAll();
-                }
+// FIXED LAOD GAME SO THAT IT 
+@SuppressWarnings("unchecked")
+private void loadGame() {
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("chess_save.dat"))) {
+        ArrayList<Piece> loadedPieces = (ArrayList<Piece>) in.readObject();
+        pieceList.clear();
+        for (int i = 0; i < CHESS_BOARD_SIZING; i++) {
+            for (int j = 0; j < CHESS_BOARD_SIZING; j++) {
+                CHESS_SQUARES[i][j].removeAll();
             }
-            pieceList = loadedPieces;
-            for (Piece p : pieceList) {
-                CHESS_SQUARES[p.row][p.col].add(new JLabel(p.icon));
-            }
-
-            revalidate();
-            repaint();
-            JOptionPane.showMessageDialog(this, "Game Loaded!");
+        }
+        pieceList = loadedPieces;
+        for (Piece p : pieceList) {
+            p.board = this; // REATTACHES THE PIECES AND POSITIONS TO CURRENT BOARD
+            p.loadIcon(); // RELOADS THE SPRITES IN PLACE
+            CHESS_SQUARES[p.row][p.col].add(new JLabel(p.icon));
+        }
+        revalidate();
+        repaint();
+        JOptionPane.showMessageDialog(this, "Game Loaded!");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error Loading.");
         }
     }
-
 }

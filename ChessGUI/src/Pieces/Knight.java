@@ -18,6 +18,13 @@ public class Knight extends Piece{
         BufferedImage sub = sheet.getSubimage(3 * sheetScale, sheetScale, sheetScale, sheetScale);
         this.icon = new ImageIcon(sub.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
     }
-}
+    }
+    @Override
+    public boolean isValidMove(int targetCol, int targetRow) {
+        if (!super.isValidMove(targetCol, targetRow)) return false;
+
+        return Math.abs(col - targetCol) * Math.abs(row - targetRow) == 2;
+    }
+
 }
 
