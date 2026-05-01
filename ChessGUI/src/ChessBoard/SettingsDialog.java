@@ -12,8 +12,7 @@ public class SettingsDialog extends JDialog {
         setLayout(new GridLayout(4, 2, 10, 10));
         setSize(300, 250);
         setLocationRelativeTo(board);
-
-        // 1. Board Theme Selector
+// BOARD SELECTOR
         add(new JLabel(" Board Theme:"));
         String[] themes = {"Classic", "Modern Gray", "Woodland"};
         JComboBox<String> themeBox = new JComboBox<>(themes);
@@ -28,7 +27,7 @@ public class SettingsDialog extends JDialog {
         });
         add(themeBox);
 
-        // 2. Board Size Selector
+// BOARD SIZING
         add(new JLabel(" Board Size:"));
         String[] sizes = {"Small (600)", "Medium (800)", "Large (1000)"};
         JComboBox<String> sizeBox = new JComboBox<>(sizes);
@@ -40,18 +39,17 @@ public class SettingsDialog extends JDialog {
         });
         add(sizeBox);
 
-        // 3. Piece Style (Placeholder for now)
+// TO ADD NEW SPRITE SHEET
         add(new JLabel(" Piece Style:"));
         JButton pieceBtn = new JButton("Change Sprites");
         pieceBtn.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Select a new sprite sheet file!");
-            // Here you would call a method to reload piece images
         });
         add(pieceBtn);
 
         JButton closeBtn = new JButton("Close");
         closeBtn.addActionListener(e -> dispose());
-        add(new JLabel("")); // Spacer
+        add(new JLabel(""));
         add(closeBtn);
     }
 }
